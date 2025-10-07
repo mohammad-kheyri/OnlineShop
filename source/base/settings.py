@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'apps.blog',
+    'apps.product',
+    'apps.transaction',
+    'apps.user',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +54,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'onlineshop.urls'
+AUTH_USER_MODEL = "user.User"
+
+ROOT_URLCONF = 'base.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'onlineshop.wsgi.application'
+WSGI_APPLICATION = 'base.wsgi.application'
 
 
 # Database
