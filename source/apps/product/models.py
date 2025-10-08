@@ -1,6 +1,6 @@
 from django.db import models
 
-from user.models import User
+from apps.user.models import User
 
 
 class Brand(models.Model):
@@ -26,7 +26,7 @@ class ProductCategory(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    price = models.DecimalField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
