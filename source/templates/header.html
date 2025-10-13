@@ -16,31 +16,26 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
                         <li class="nav-item submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                              aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link {%if active_page == 'shop category' %} active {%endif%}" href="category.html">Shop Category</a></li>
-                                <li class="nav-item"><a class="nav-link {%if active_page == 'product detals' %} active {%endif%}" href="single-product.html">Product Details</a></li>
+                                <li class="nav-item"><a class="nav-link {%if active_page == 'shop category' %} active {%endif%}" href="{% url 'category' %}">Shop Category</a></li>
                                 <li class="nav-item"><a class="nav-link {%if active_page == 'product checkout' %} active {%endif%}" href="checkout.html">Product Checkout</a></li>
                                 <li class="nav-item"><a class="nav-link {%if active_page == 'shopping' %} active {%endif%}" href="cart.html">Shopping Cart</a></li>
                                 <li class="nav-item"><a class="nav-link {%if active_page == 'confirmation' %} active {%endif%}" href="confirmation.html">Confirmation</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item submenu dropdown {%if active_page in 'blog_list blog_single'%}active {%endif%}">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                             aria-expanded="false">Blog</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item {%if active_page == 'blog_list'%} active {%endif%}"><a class="nav-link" href="blog.html">Blog</a></li>
-                                <li class="nav-item {%if active_page == 'blog_single'%} active {%endif%}"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-                            </ul>
+                          
+                        <li class="nav-item {%if active_page == 'blog_list'%} active {%endif%}"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                            
                         </li>
                         <li class="nav-item submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                              aria-expanded="false">Pages</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                                 <li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
                                 <li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
                             </ul>
