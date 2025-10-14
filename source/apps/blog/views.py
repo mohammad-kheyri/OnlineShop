@@ -15,7 +15,7 @@ class BlogView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['active_page'] = Blog.objects.all().order_by('-created_at')
+        context['active_page'] = 'blog'
         return context
         
 class BlogDetailsView(DetailView):
