@@ -5,7 +5,7 @@ from .models import Brand, Color, ProductCategory, Product, ProductComment, Revi
 
 @admin.register(Product)
 class AdminProduct(admin.ModelAdmin):
-    list_display = ('name', 'price', 'brand', 'color', 'category')
+    list_display = ('name', 'original_price', 'off_price', 'brand', 'color', 'category')
     search_fields = ('name',)
     list_filter = ('brand', 'color', 'category')
 

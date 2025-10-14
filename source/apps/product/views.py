@@ -5,14 +5,16 @@ from django.views.generic import ListView, DetailView
 from .models import Product, ProductCategory
 
 
-class ProductView(ListView):
+class IndexView(ListView):
     template_name = 'index.html'
     model = Product
     queryset = Product.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['active_page'] = Product.objects.all()
+        context['active_page'] = "index"
+        # context["product_list"] = Product.objects.all()
+        return context
 
 class ProductDetailView(DetailView):
     template_name = 'single-product.html'
@@ -21,10 +23,21 @@ class ProductDetailView(DetailView):
     def get_queryset(self):
         return Product.objects.all()
 
-class CategoryListView(ListView):
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['active_page'] = 'single-product'
+        return context
+
+class ProductListView(ListView):
     template_name = 'category.html'
     model = ProductCategory
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        print("*" * 40)
+        context['active_page'] = "products"
+        return context
 
 
 

@@ -26,7 +26,11 @@ class ProductCategory(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    original_price = models.DecimalField(max_digits=10, decimal_places=2)
+    off_price = models.DecimalField(max_digits=6, decimal_places=2)
+    description = models.TextField(null=True)
+    image = models.ImageField(null=True)
+    availability = models.IntegerField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
