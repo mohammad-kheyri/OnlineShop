@@ -14,6 +14,7 @@ class Blog(models.Model):
     body = RichTextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE)
+    image = models.ImageField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -27,7 +28,7 @@ class BlogComment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.blog
+        return self.body
 
 class BlogTag(models.Model):
     name = models.CharField(max_length=100)

@@ -14,6 +14,7 @@ class IndexView(ListView):
         context = super().get_context_data()
         context['active_page'] = "index"
         # context["product_list"] = Product.objects.all()
+        context["new_product"] = Product.objects.last()
         return context
 
 class ProductDetailView(DetailView):
@@ -27,6 +28,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         context['active_page'] = 'single-product'
+        # context["product"] = Product.objects.get(id=self.kwargs.get("pk"))
         return context
 
 class ProductListView(ListView):
@@ -35,7 +37,6 @@ class ProductListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        print("*" * 40)
         context['active_page'] = "products"
         return context
 

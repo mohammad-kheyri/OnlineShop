@@ -21,10 +21,10 @@
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
-                    <h1>Blog Page</h1>
+                    <h1>Blog Detail Page</h1>
                     <nav class="d-flex align-items-center">
                         <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="category.html">Blog</a>
+                        <a href="single-blog.html">Blog Detail</a>
                     </nav>
                 </div>
             </div>
@@ -40,22 +40,24 @@
                     <div class="single-post row">
                         <div class="col-lg-12">
                             <div class="feature-img">
-                                <img class="img-fluid" src="{% static 'img/blog/feature-img1.jpg' %}" alt="">
+                                <img class="img-fluid" src="{{blog.image.url}}" alt="">
                             </div>
                         </div>
                         <div class="col-lg-3  col-md-3">
                             <div class="blog_info text-right">
                                 <div class="post_tag">
-                                    <a href="#">Food,</a>
-                                    <a class="active" href="#">Technology,</a>
+                                    {% for tag in blog.blogtag_set.all %}
+                                    <a href="#">{{tag}},</a>
+                                    <!-- <a class="active" href="#">Technology,</a>
                                     <a href="#">Politics,</a>
-                                    <a href="#">Lifestyle</a>
+                                    <a href="#">Lifestyle</a> -->
+                                    {% endfor %}
                                 </div>
                                 <ul class="blog_meta list">
-                                    <li><a href="#">Mark wiens<i class="lnr lnr-user"></i></a></li>
-                                    <li><a href="#">12 Dec, 2018<i class="lnr lnr-calendar-full"></i></a></li>
+                                    <li><a href="#">{{blog.author.get_full_name}}<i class="lnr lnr-user"></i></a></li>
+                                    <li><a href="#">{{blog.created_at|date:"Y-m-d"}}<i class="lnr lnr-calendar-full"></i></a></li>
                                     <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
-                                    <li><a href="#">06 Comments<i class="lnr lnr-bubble"></i></a></li>
+                                    <li><a href="#">{{blog.blogcomment_set.count}}<i class="lnr lnr-bubble"></i></a></li>
                                 </ul>
                                 <ul class="social-links">
                                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -66,7 +68,7 @@
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-9 blog_details">
-                            <h2>Astronomy Binoculars A Great Alternative</h2>
+                            <h2>{{blog.title}}</h2>
                             <p class="excert">
                                 MCSE boot camps have its supporters and its detractors. Some people do not understand
                                 why you should have to spend money on boot camp when you can get the MCSE study
@@ -120,133 +122,67 @@
                     </div>
                     <div class="navigation-area">
                         <div class="row">
+                            {% if prev_blog %}
                             <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                                 <div class="thumb">
-                                    <a href="#"><img class="img-fluid" src="{% static 'img/blog/prev.jpg' %}" alt=""></a>
+                                    <a href="{% url 'blog:blog-detail' prev_blog.pk %}"><img class="img-fluid" src="{{ prev_blog.image.url }}" alt=""
+                                                                                            style="width:150px; height:100px; object-fit:cover;"></a>
                                 </div>
                                 <div class="arrow">
-                                    <a href="#"><span class="lnr text-white lnr-arrow-left"></span></a>
+                                    <a href="{% url 'blog:blog-detail' prev_blog.pk %}"><span class="lnr text-white lnr-arrow-left"></span></a>
                                 </div>
                                 <div class="detials">
                                     <p>Prev Post</p>
-                                    <a href="#">
-                                        <h4>Space The Final Frontier</h4>
+                                    <a href="{% url 'blog:blog-detail' prev_blog.pk %}">
+                                        <h4>{{ prev_blog.title }}</h4>
                                     </a>
                                 </div>
                             </div>
+                            {% endif %}
+
+                            {% if next_blog %}
                             <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                                 <div class="detials">
                                     <p>Next Post</p>
-                                    <a href="#">
-                                        <h4>Telescopes 101</h4>
+                                    <a href="{% url 'blog:blog-detail' next_blog.pk %}">
+                                        <h4>{{ next_blog.title }}</h4>
                                     </a>
                                 </div>
                                 <div class="arrow">
-                                    <a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
+                                    <a href="{% url 'blog:blog-detail' next_blog.pk %}"><span class="lnr text-white lnr-arrow-right"></span></a>
                                 </div>
                                 <div class="thumb">
-                                    <a href="#"><img class="img-fluid" src="{% static 'img/blog/next.jpg' %}" alt=""></a>
+                                    <a href="{% url 'blog:blog-detail' next_blog.pk %}"><img class="img-fluid" src="{{ next_blog.image.url }}" alt=""
+                                                                                            style="width:150px; height:100px; object-fit:cover;"></a>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="comments-area">
-                        <h4>05 Comments</h4>
+                        <h4>{{blog.blogcomment_set.count}} Comments</h4>
                         <div class="comment-list">
+                            {% for comment in blog.blogcomment_set.all %} <br>
                             <div class="single-comment justify-content-between d-flex">
                                 <div class="user justify-content-between d-flex">
                                     <div class="thumb">
-                                        <img src="{% static 'img/blog/c1.jpg' %}" alt="">
+                                        <img src="{{ comment.user.customer_set.first.profile_image.url }}" alt="{{ comment.user.username }}">
+                                        
                                     </div>
                                     <div class="desc">
-                                        <h5><a href="#">Emilly Blunt</a></h5>
-                                        <p class="date">December 4, 2018 at 3:12 pm </p>
+                                        <h5><a href="#">{{comment.user.get_full_name}}</a></h5>
+                                        <p class="date"><b>{{comment.created_at}} </b></p>
                                         <p class="comment">
-                                            Never say goodbye till the end comes!
+                                            {{comment.body}}
                                         </p>
                                     </div>
                                 </div>
                                 <div class="reply-btn">
                                     <a href="" class="btn-reply text-uppercase">reply</a>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="comment-list left-padding">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="{% static 'img/blog/c2.jpg' %}" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Elsie Cunningham</a></h5>
-                                        <p class="date">December 4, 2018 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list left-padding">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="{% static 'img/blog/c3.jpg' %}" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Annie Stephens</a></h5>
-                                        <p class="date">December 4, 2018 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="{% static 'img/blog/c4.jpg' %}" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Maria Luna</a></h5>
-                                        <p class="date">December 4, 2018 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="{% static 'img/blog/c5.jpg' %}" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Ina Hayes</a></h5>
-                                        <p class="date">December 4, 2018 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
+                            </div><hr>
+                            {% endfor %}
+                        </div>                      
                     </div>
                     <div class="comment-form">
                         <h4>Leave a Reply</h4>
