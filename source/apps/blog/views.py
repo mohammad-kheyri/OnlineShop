@@ -25,6 +25,17 @@ class BlogDetailsView(DetailView):
     def get_queryset(self):
         return Blog.objects.all()
     
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        blog = self.get_object()
+
+        context['next_blog'] = Blog.objects.filter(id__gt=blog.id).order_by('id').first()
+        context['prev_blog'] = Blog.objects.filter(id__lt=blog.id).order_by('-id').first()
+
+
+        context['active_page'] = 'single-blog'
+        return context 
+
 
 
 # def blog(request):

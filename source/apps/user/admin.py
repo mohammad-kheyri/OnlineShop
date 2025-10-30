@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import User, Customer
 
 @admin.register(User)
 class AdminUser(UserAdmin):
@@ -29,3 +29,10 @@ class AdminUser(UserAdmin):
 
     def full_name(self, obj):
         return f"{obj.first_name}  {obj.last_name}"
+    
+
+@admin.register(Customer)
+class AdminCustomer(admin.ModelAdmin):
+    model = Customer
+    list_display = ("user", )
+    search_fields = ["name"]
