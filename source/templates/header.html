@@ -29,15 +29,19 @@
                         </li>
                           
                         <li class="nav-item {%if active_page == 'blog'%} active {%endif%}"><a class="nav-link" href="{% url 'blog:blog' %}">Blog</a></li>
-                            
-                        </li>
-                        <li class="nav-item submenu dropdown">
+                          
+                   
+                        <li class="nav-item submenu dropdown {%if active_page in 'login logout tracking elements' %} active {%endif%}">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                              aria-expanded="false">Pages</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                                <li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-                                <li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+                                {% if user.is_authenticated %}
+                                    <li class="nav-item {%if active_page == 'logout' %} active {%endif%}"><a class="nav-link" href="{% url 'user:logout' %}">Logout</a></li>
+                                {% else %}
+                                    <li class="nav-item {%if active_page == 'login' %} active {%endif%}"><a class="nav-link" href="{% url 'user:login' %}">Login</a></li>
+                                {% endif %}
+                                <li class="nav-item {%if active_page == 'tracking' %} active {%endif%}"><a class="nav-link" href="tracking.html">Tracking</a></li>
+                                <li class="nav-item {%if active_page == 'elements' %} active {%endif%}"><a class="nav-link" href="elements.html">Elements</a></li>
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
