@@ -25,6 +25,11 @@ class LoginView(View):
             return render(request, 'login.html', {'error': 'Invalid username or password'})
    
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['active_page'] = 'login'
+        return context
+
 class LogoutView(View):
     def get(self, request):
         logout(request)
@@ -42,4 +47,7 @@ class SignUpView(CreateView):
         messages.success(self.request, "Your account has been created successfully! You can now log in.")
         return response
 
-
+    def get_context_data(self, *, object_list=None,  **kwargs):
+        context = super().get_context_data()
+        context['active_page'] = 'signup'
+        return context

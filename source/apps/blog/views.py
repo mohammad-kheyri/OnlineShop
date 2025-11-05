@@ -1,11 +1,11 @@
 from typing import Any
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
-from .models import Blog, BlogCategory, BlogTag
-
+from .models import Blog, BlogCategory, BlogTag, BlogComment
+from .form import BlogCommentForm
 
 class BlogView(ListView):
     template_name = 'blog.html'
@@ -63,11 +63,28 @@ class BlogDetailsView(DetailView):
         context['next_blog'] = Blog.objects.filter(id__gt=blog.id).order_by('id').first()
         context['prev_blog'] = Blog.objects.filter(id__lt=blog.id).order_by('-id').first()
         context["blog_list"] = Blog.objects.all()
+        context['comment_form'] = BlogCommentForm()
+        context['comments'] = BlogComment.objects.filter(blog=self.object).order_by('-created_at')
 
 
         context['active_page'] = 'blog'
         return context 
 
+
+
+    def post(self, request, *args, **kwargs):
+            self.object = self.get_object()  # Get the current product instance
+            form = BlogCommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.blog = self.object
+                comment.user = request.user  # Assuming user is logged in
+                comment.save()
+                return redirect('blog:blog-detail', pk=self.object.pk)  # Redirect to the same detail page
+            else:
+                context = self.get_context_data()
+                context['comment_form'] = form
+                return self.render_to_response(context)
 
 
 # def blog(request):
