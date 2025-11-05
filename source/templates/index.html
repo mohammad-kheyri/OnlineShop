@@ -204,7 +204,7 @@
 						<div class="single-product">
 							<img class="img-fluid" src="{{product.image.url}}" alt="">
 							<div class="product-details">
-								<a href="{% url 'product:product_detail' product.id %}">
+								<a href="{% url 'product:product-detail' pk=product.id %}">
 								<h6>{{product.name}}</h6>
 							</a>
 								<div class="price">
@@ -258,7 +258,7 @@
 						<div class="single-product">
 							<img class="img-fluid" src="{{product.image.url}}" alt="">
 							<div class="product-details">
-								<a href="{% url 'product:product_detail' product.id %}">
+								<a href="{% url 'product:product-detail' pk=product.id %}">
 								<h6>{{product.name}}</h6>
 								</a>
 

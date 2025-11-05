@@ -31,20 +31,14 @@
                         <li class="nav-item {%if active_page == 'blog'%} active {%endif%}"><a class="nav-link" href="{% url 'blog:blog' %}">Blog</a></li>
                           
                    
-                        <li class="nav-item submenu dropdown {%if active_page in 'login logout tracking elements' %} active {%endif%}">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                             aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu">
-                                {% if user.is_authenticated %}
-                                    <li class="nav-item {%if active_page == 'logout' %} active {%endif%}"><a class="nav-link" href="{% url 'user:logout' %}">Logout</a></li>
-                                {% else %}
-                                    <li class="nav-item {%if active_page == 'login' %} active {%endif%}"><a class="nav-link" href="{% url 'user:login' %}">Login</a></li>
-                                {% endif %}
-                                <li class="nav-item {%if active_page == 'tracking' %} active {%endif%}"><a class="nav-link" href="tracking.html">Tracking</a></li>
-                                <li class="nav-item {%if active_page == 'elements' %} active {%endif%}"><a class="nav-link" href="elements.html">Elements</a></li>
-                            </ul>
-                        </li>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item {%if active_page == 'logout' %} active {%endif%}"><a class="nav-link" href="{% url 'user:logout' %}">Logout</a></li>
+                            {% else %}
+                                <li class="nav-item {%if active_page == 'login' %} active {%endif%}"><a class="nav-link" href="{% url 'user:login' %}">Login</a></li>
+                            {% endif %}
+                                
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        <li class="nav-item {% if active_page == 'signup' %} active {%endif%}"><a class="nav-link" href="{% url 'user:signup' %}">Signup</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>

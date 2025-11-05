@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, request
 from django.views.generic import ListView, DetailView
 
 from .models import Product, ProductCategory, Brand, Color
+from .form import ProductComment, ProductCommentForm
 
 class IndexView(ListView):
     template_name = 'index.html'
@@ -27,8 +28,24 @@ class ProductDetailView(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         context['active_page'] = 'product'
-        # context["product"] = Product.objects.get(id=self.kwargs.get("pk"))
+        context['comment_form'] = ProductCommentForm()
+        context['comments'] = ProductComment.objects.filter(product=self.object).order_by('-created_at')
         return context
+
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()  # Get the current product instance
+        form = ProductCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = self.object
+            comment.user = request.user  # Assuming user is logged in
+            comment.save()
+            return redirect('product:product-detail', pk=self.object.pk)  # Redirect to the same detail page
+        else:
+            context = self.get_context_data()
+            context['comment_form'] = form
+            return self.render_to_response(context)
 
 
 class ProductListView(ListView):
