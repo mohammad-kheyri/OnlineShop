@@ -53,7 +53,7 @@ class User(AbstractUser):
 
 
 class Customer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=11)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 

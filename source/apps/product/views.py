@@ -3,7 +3,7 @@ from django.http import HttpResponse, request
 from django.views.generic import ListView, DetailView
 
 from .models import Product, ProductCategory, Brand, Color
-from .form import ProductComment, ProductCommentForm
+from .forms import ProductComment, ProductCommentForm
 
 class IndexView(ListView):
     template_name = 'index.html'

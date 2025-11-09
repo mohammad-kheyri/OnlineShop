@@ -35,6 +35,11 @@ class LogoutView(View):
         logout(request)
         return redirect('product:index')
     
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_contect_data()
+        context['active_page'] = 'login'
+        return context
+    
 
 class SignUpView(CreateView):
     model = User
