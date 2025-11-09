@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from .models import Blog, BlogCategory, BlogTag, BlogComment
-from .form import BlogCommentForm
+from .forms import BlogCommentForm
 
 class BlogView(ListView):
     template_name = 'blog.html'

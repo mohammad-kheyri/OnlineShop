@@ -57,7 +57,7 @@
                                     <li><a href="#">{{blog.author.get_full_name}}<i class="lnr lnr-user"></i></a></li>
                                     <li><a href="#">{{blog.created_at|date:"Y-m-d"}}<i class="lnr lnr-calendar-full"></i></a></li>
                                     <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
-                                    <li><a href="#">{{blog.blogcomment_set.count}}<i class="lnr lnr-bubble"></i></a></li>
+                                    <li><a href="#">{{blog.blogcomment_set.count}} comments<i class="lnr lnr-bubble"></i></a></li>
                                 </ul>
                                 <ul class="social-links">
                                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -166,7 +166,7 @@
                             <div class="single-comment justify-content-between d-flex">
                                 <div class="user justify-content-between d-flex">
                                     <div class="thumb">
-                                        <img src="{{ comment.user.customer_set.first.profile_image.url }}" alt="{{ comment.user.username }}">
+                                        <img src="{{ comment.user.customer.profile_image.url }}" alt="{{ comment.user.username }}">
                                         
                                     </div>
                                     <div class="desc">

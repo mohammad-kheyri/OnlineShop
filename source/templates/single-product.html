@@ -194,7 +194,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="{{ comment.user.customer_set.first.profile_image.url }}" alt="{{ comment.user.username }}">
+											<img src="{{ comment.user.customer.profile_image.url }}" alt="{{ comment.user.username }}">
 										</div>
 										<div class="media-body">
 											<h4>{{ comment.user.get_full_name }}</h4>

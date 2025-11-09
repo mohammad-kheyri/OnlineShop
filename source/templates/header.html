@@ -21,23 +21,22 @@
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                              aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item {%if active_page == 'products' %} active {%endif%}" ><a class="nav-link" href="{% url 'product:category' %}">Product Category</a></li>
-                                <li class="nav-item {%if active_page == 'checkout' %} active {%endif%}"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-                                <li class="nav-item {%if active_page == 'cart' %} active {%endif%}"><a class="nav-link " href="cart.html">Cart</a></li>
-                                <li class="nav-item {%if active_page == 'confirmation' %} active {%endif%}"><a class="nav-link " href="confirmation.html">Confirmation</a></li>
+                                <li class="nav-item {% if active_page == 'products' %} active {%endif%}" ><a class="nav-link" href="{% url 'product:category' %}">Product Category</a></li>
+                                <li class="nav-item {% if active_page == 'checkout' %} active {%endif%}"><a class="nav-link" href="{% url 'transaction:checkout' %}">Checkout</a></li>
+                                <li class="nav-item {% if active_page == 'cart' %} active {%endif%}"><a class="nav-link " href="{% url 'transaction:cart' %}">Cart</a></li>
+                                <li class="nav-item {% if active_page == 'confirmation' %} active {%endif%}"><a class="nav-link " href="{% url 'transaction:confirmation' %}">Confirmation</a></li>
                             </ul>
                         </li>
                           
-                        <li class="nav-item {%if active_page == 'blog'%} active {%endif%}"><a class="nav-link" href="{% url 'blog:blog' %}">Blog</a></li>
+                        <li class="nav-item {% if active_page == 'blog'%} active {%endif%}"><a class="nav-link" href="{% url 'blog:blog' %}">Blog</a></li>
                           
                    
                             {% if user.is_authenticated %}
-                                <li class="nav-item {%if active_page == 'logout' %} active {%endif%}"><a class="nav-link" href="{% url 'user:logout' %}">Logout</a></li>
+                                <li class="nav-item {% if active_page == 'logout' %} active {%endif%}"><a class="nav-link" href="{% url 'user:logout' %}">Logout</a></li>
                             {% else %}
-                                <li class="nav-item {%if active_page == 'login' %} active {%endif%}"><a class="nav-link" href="{% url 'user:login' %}">Login</a></li>
+                                <li class="nav-item {% if active_page == 'login' %} active {%endif%}"><a class="nav-link" href="{% url 'user:login' %}">Login</a></li>
                             {% endif %}
                                 
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         <li class="nav-item {% if active_page == 'signup' %} active {%endif%}"><a class="nav-link" href="{% url 'user:signup' %}">Signup</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
