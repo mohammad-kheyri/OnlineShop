@@ -204,7 +204,7 @@
 						<div class="single-product">
 							<img class="img-fluid" src="{{product.image.url}}" alt="">
 							<div class="product-details">
-								<a href="">
+								<a href="{% url 'product:product-detail' pk=product.id %}">
 								<h6>{{product.name}}</h6>
 							</a>
 								<div class="price">
@@ -217,18 +217,7 @@
 										<span class="ti-bag"></span>
 										<p class="hover-text">add to bag</p>
 									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-heart"></span>
-										<p class="hover-text">Wishlist</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-sync"></span>
-										<p class="hover-text">compare</p>
-									</a>
-									<a href="{% url 'product:product-detail' pk=product.id %}" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
+									
 								</div>
 							</div>
 						</div>
@@ -273,18 +262,7 @@
 										<span class="ti-bag"></span>
 										<p class="hover-text">add to bag</p>
 									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-heart"></span>
-										<p class="hover-text">Wishlist</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-sync"></span>
-										<p class="hover-text">compare</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
+									
 								</div>
 							</div>
 						</div>

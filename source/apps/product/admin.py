@@ -9,7 +9,7 @@ class AdminProduct(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('brand', 'color', 'category')
 
-    # This lets you pick or add Brands, Colors, etc., directly
+
     autocomplete_fields = ['brand', 'color', 'category']
 
 

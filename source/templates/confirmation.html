@@ -36,25 +36,33 @@
 			<h3 class="title_confirmation">Thank you. Your order has been received.</h3>
 					<div class="row order_d_inner">
 						<div class="col-lg-4">
+							<div class="details_item">
 							<h4>Order Info</h4>
-							<ul>
-								<li>number: {{ cart.id }}</li>
-								<li>Date: {{ cart.created_at|date:"Y-m-d" }}</li>
-								<li>Total: ${{ cart.total_price }}</li>
-								<li>Payment method: Paypal</li>
+							<ul class="list">
+								<li><a href="#"><span>Number</span> : {{ cart.id }}</a></li>
+								<li><a href="#"><span>Date</span> : {{ cart.created_at|date:"Y-m-d" }}</a></li>
+								<li><a href="#"><span>Total</span> : ${{ cart.total_price }}</a></li>
+								<li><a href="#"><span>Payment Method </span> : Paypal</a></li>
+								
 							</ul>
+							</div>
 						</div>
 						<div class="col-lg-4">
+							<div class="details_item">
 							<h4>Billing Address</h4>
-							<ul>
-								<li><span>Street</span>  :   {{ billing.address_line1 }}</li>
-								<li>City: {{ billing.city }}</li>
-								<li>Country: {{ billing.country }}</li>
-								<li>Postcode: {{ billing.postal_code }}</li>
+							<ul class="list">
+								<li><a href="#"><span>Street</span> : {{ billing.address_line1 }}</a></li>
+								<li><a href="#"><span>City</span> : {{ billing.city }}</a></li>
+								<li><a href="#"><span>Country</span> : {{ billing.country }}</a></li>
+								<li><a href="#"><span>Postcode</span> : {{ billing.postal_code }}</a></li>
+								
 							</ul>
+							</div>
 						</div>
 					</div>
-
+					<div class="order_details_table">
+					<h2>Order Details</h2>
+					<div class="table-responsive">
 					<table class="table">
 						<thead>
 							<tr>
@@ -71,15 +79,14 @@
 								<td>${{ item.total_price }}</td>
 							</tr>
 							{% endfor %}
+							
 							<tr>
 								<td>Subtotal</td>
 								<td></td>
 								<td>${{ cart.total_price }}</td>
 							</tr>
 							<tr>
-								<td>Shipping</td>
-								<td></td>
-								<td>$50.00</td>
+								
 							</tr>
 							<tr>
 								<td>Total</td>
@@ -88,6 +95,8 @@
 							</tr>
 						</tbody>
 					</table>
+					</div>
+					</div>
 				</div>
 			</div>
 		</div>
