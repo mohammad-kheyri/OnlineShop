@@ -68,9 +68,8 @@
 							 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
 						</div>
 						<div class="card_area d-flex align-items-center">
-							<a class="primary-btn" href="#">Add to Cart</a>
-							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+							<a class="primary-btn" onclick="addToCart({{ product.id }})">Add to Cart</a>
+							
 						</div>
 					</div>
 				</div>
@@ -380,6 +379,58 @@
 	<!-- End footer Area -->
 
 	{% include "scripts.html" %}
+
+	<script>
+		function getCSRFToken() {
+			const name = 'csrftoken=';
+			const cookies = document.cookie.split(';');
+			for (let cookie of cookies) {
+				cookie = cookie.trim();
+				if (cookie.startsWith(name)) {
+					return cookie.substring(name.length);
+				}
+			}
+			return '';
+		}
+		
+		async function addToCart(productId) {
+			if (!productId) {
+				alert('Product ID is missing!');
+				return;
+			}
+		
+			// ✅ Get quantity from input field with id="sst"
+			const quantityInput = document.getElementById('sst');
+			const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
+		
+			const baseUrl = "{% url 'transaction:add_to_cart' 0 %}".replace('/0/', `/${productId}/`);
+			const csrftoken = getCSRFToken();
+		
+			try {
+				const response = await fetch(baseUrl, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': csrftoken,
+					},
+					body: JSON.stringify({ quantity: quantity }),
+				});
+		
+				const data = await response.json();
+		
+				if (response.ok) {
+					alert(data.message || `Added ${quantity} item(s) to cart.`);
+				} else {
+					alert(data.error || 'Failed to add product to cart.');
+				}
+		
+			} catch (err) {
+				alert('An unexpected error occurred.');
+				console.error(err);
+			}
+		}
+		</script>
+		
 
 
 </body>

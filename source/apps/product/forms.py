@@ -10,7 +10,7 @@ class ProductCommentForm(forms.ModelForm):
                 'class': 'form-control',
                 'name': 'message',
                 'id': 'message',
-                'rows': '3',  # You can use '1' or any number as per your need
+                'rows': '3', 
                 'placeholder': 'Message'
             })
         }

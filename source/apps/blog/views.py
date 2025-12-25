@@ -2,10 +2,11 @@ from typing import Any
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from .models import Blog, BlogCategory, BlogTag, BlogComment
-from .forms import BlogCommentForm
+from .forms import BlogCommentForm, CreateBlogForm
+from django.urls import reverse_lazy
 
 class BlogView(ListView):
     template_name = 'blog.html'
@@ -22,7 +23,7 @@ class BlogView(ListView):
         search_query = self.request.GET.get('search')
 
         if category_id:
-            queryset = queryset.filter(category_id=category_id)  # Filtering by category foreign key
+            queryset = queryset.filter(category_id=category_id)
     
         tag_id = self.request.GET.get('tag')
         if tag_id:
@@ -73,26 +74,68 @@ class BlogDetailsView(DetailView):
 
 
     def post(self, request, *args, **kwargs):
-            self.object = self.get_object()  # Get the current product instance
+            self.object = self.get_object()
             form = BlogCommentForm(request.POST)
             if form.is_valid():
                 comment = form.save(commit=False)
                 comment.blog = self.object
-                comment.user = request.user  # Assuming user is logged in
+                comment.user = request.user  
                 comment.save()
-                return redirect('blog:blog-detail', pk=self.object.pk)  # Redirect to the same detail page
+                return redirect('blog:blog-detail', pk=self.object.pk) 
             else:
                 context = self.get_context_data()
                 context['comment_form'] = form
                 return self.render_to_response(context)
 
 
-# def blog(request):
-#     return render(request, 'blog.html')
+class CreateBlog(CreateView):
+    model = Blog
+    form_class = CreateBlogForm
+    template_name = 'create-blog.html'
+    success_url = reverse_lazy('blog:blog')
+
+    
+    def form_valid(self, form):
+        blog = form.save(commit=False)
+        blog.author = self.request.user
+        blog.save()
+
+        tags = form.cleaned_data.get('tags')
+        if tags:
+            tag_list = [tag.strip() for tag in tags.split(',') if tag.strip()]
+            for tag in tag_list:
+                BlogTag.objects.create(
+                    name=tag,
+                    blog=blog
+                )
+
+        return super().form_valid(form)
 
 
+class UpdateBlog(UpdateView):
+    model = Blog
+    template_name = 'update-blog.html'
+    success_url = reverse_lazy('blog:blog-detail')
+    form_class = CreateBlogForm
 
-# def blog_details(request):
-#     return render(request, 'single-blog.html')
+    def form_valid(self, form):
+        blog = form.save(commit=False)
+        blog.author = self.request.user
+        blog.save()
+
+        tags = form.cleaned_data.get('tags')
+        if tags:
+            tag_list = [tag.strip() for tag in tags.split(',') if tag.strip()]
+            for tag in tag_list:
+                BlogTag.objects.create(
+                    name=tag,
+                    blog=blog
+                )
+
+        return super().form_valid(form)
 
 
+class DeleteBlog(DeleteView):
+    model = Blog
+    template_name = 'delete-blog.html'
+    success_url = reverse_lazy('blog:blog')

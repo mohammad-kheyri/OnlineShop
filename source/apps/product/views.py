@@ -34,14 +34,14 @@ class ProductDetailView(DetailView):
 
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the current product instance
+        self.object = self.get_object() 
         form = ProductCommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.product = self.object
-            comment.user = request.user  # Assuming user is logged in
+            comment.user = request.user  
             comment.save()
-            return redirect('product:product-detail', pk=self.object.pk)  # Redirect to the same detail page
+            return redirect('product:product-detail', pk=self.object.pk)  
         else:
             context = self.get_context_data()
             context['comment_form'] = form
@@ -51,21 +51,22 @@ class ProductDetailView(DetailView):
 class ProductListView(ListView):
     template_name = 'category.html'
     model = Product
+    paginate_by = 6
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        # Filter by brand if brand slug or id is passed in the URL
+        
         brand_id = self.request.GET.get('brand')
         if brand_id:
             queryset = queryset.filter(brand__id=brand_id)
 
-        # Optional: Filter by category
+       
         category_id = self.request.GET.get('category')
         if category_id:
             queryset = queryset.filter(category__id=category_id)
 
-        # Optional: Filter by color
+    
         color_id = self.request.GET.get('color')
         if color_id:
             queryset = queryset.filter(color__id=color_id)
@@ -83,33 +84,12 @@ class ProductListView(ListView):
         context["brand_list"] = [{'brand': brand, 'product_count': brand.product_set.count()} for brand in all_brands]
         context["color_list"] = [{'color': color, 'product_count': color.product_set.count()} for color in all_colors]
 
-        # Pass currently selected filters
+        
         context['selected_brand'] = self.request.GET.get('brand')
         context['selected_category'] = self.request.GET.get('category')
         context['selected_color'] = self.request.GET.get('color')
 
         return context
-
-
-
-
-# context['brand_list'] = Brand.objects.all()
-# context['color_list'] = Color.objects.all()
-# context['category_list'] = ProductCategory.objects.all()
-
-
-
-
-# def product_details(request):
-#     return render(request, 'single-product.html')
-
-
-# def index(request):
-#     return render(request, 'index.html')
-
-
-# def category(request):
-#     return render(request, 'category.html')
 
 
         
