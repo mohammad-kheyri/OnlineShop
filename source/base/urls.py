@@ -19,13 +19,23 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('apps.blog.api.urls', namespace='blog_api')),
+    path('api/', include('apps.product.api.urls', namespace='product_api')),
+    path('api/', include('apps.transaction.api.urls', namespace='transaction_api')),
+    path('api/', include('apps.user.api.urls', namespace='user_api')),
+   
+
     path('', include('apps.blog.urls', namespace="blog")),
     path('', include('apps.product.urls', namespace="product")),
     path('', include('apps.user.urls', namespace='user')),
-    path('', include('apps.transaction.urls', namespace='transaction'))
+    path('', include('apps.transaction.urls', namespace='transaction')),
+
+    path('auth-token/', obtain_auth_token)
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
