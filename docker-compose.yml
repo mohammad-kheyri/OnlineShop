@@ -17,7 +17,7 @@ services:
     build: .
     container_name: online_shop_web
     command: 
-      # python source/manage.py migrate transaction &&
+      # python source/manage.py migrate &&
       python source/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app

@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
-from apps.user.models import User
+from apps.user.models import User, Customer, PhoneOTP
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.contrib import messages
+from .utils import generate_otp
+from .sms_service import send_sms
 from base.settings import EMAIL_HOST_USER
 from .forms import SignupForm
 
@@ -96,3 +99,72 @@ def NewPasswordPage(request, email):
             return HttpResponse("Password Reset")
             
     return render(request, 'new_password.html')
+
+
+
+
+class SendOTPView(View):
+    template_name = "phone_login.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        phone = request.POST.get("phone_number")
+
+        try:
+            Customer.objects.get(phone_number=phone)
+        except Customer.DoesNotExist:
+            messages.error(request, "Phone number not registered")
+            return render(request, self.template_name)
+
+        otp = generate_otp(phone)
+
+        message = f"Your login code is {otp}"
+
+        if not send_sms(phone, message):
+            messages.error(request, "SMS sending failed")
+            return render(request, self.template_name)
+
+        request.session["otp_phone"] = phone
+
+        return redirect("user:verify-otp")
+
+
+
+class VerifyOTPView(View):
+    template_name = "verify_otp.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        code = request.POST.get("otp")
+        phone = request.session.get("otp_phone")
+
+        if not phone:
+            return redirect("user:login")
+
+        try:
+            otp = PhoneOTP.objects.filter(
+                phone_number=phone
+            ).latest("created_at")
+        except PhoneOTP.DoesNotExist:
+            messages.error(request, "OTP not found")
+            return render(request, self.template_name)
+
+        if otp.is_expired():
+            messages.error(request, "OTP expired")
+            return render(request, self.template_name)
+
+        if otp.code != code:
+            messages.error(request, "Invalid OTP")
+            return render(request, self.template_name)
+
+        customer = Customer.objects.get(phone_number=phone)
+
+        login(request, customer.user)
+
+        otp.delete()
+
+        return redirect("product:index")

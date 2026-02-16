@@ -2,6 +2,8 @@ from django.db import models
 from django.apps import apps
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+
 
 from django.contrib.auth.models import AbstractUser, UserManager
 
@@ -59,3 +61,13 @@ class Customer(models.Model):
 
     def __str__(self):
         return str(self.user.email)
+
+
+class PhoneOTP(models.Model):
+    phone_number = models.CharField(max_length=11)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+
+    def is_expired(self):
+        return timezone.now() > self.expires_at
