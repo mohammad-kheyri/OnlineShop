@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import UserCreationForm, UserChangeForm
-from .models import User, Customer
+from .models import User, Customer, PhoneOTP
 
 @admin.register(User)
 class AdminUser(UserAdmin):
@@ -36,3 +36,8 @@ class AdminCustomer(admin.ModelAdmin):
     model = Customer
     list_display = ("user", )
     search_fields = ["name"]
+
+
+@admin.register(PhoneOTP)
+class AdminPhoneOTP(admin.ModelAdmin):
+    pass
