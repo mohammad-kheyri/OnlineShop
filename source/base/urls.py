@@ -21,6 +21,12 @@ from django.conf.urls.static import static
 
 from rest_framework.authtoken.views import obtain_auth_token
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +34,13 @@ urlpatterns = [
     path('api/', include('apps.product.api.urls', namespace='product_api')),
     path('api/', include('apps.transaction.api.urls', namespace='transaction_api')),
     path('api/', include('apps.user.api.urls', namespace='user_api')),
-   
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
 
     path('', include('apps.blog.urls', namespace="blog")),
     path('', include('apps.product.urls', namespace="product")),
